@@ -21,14 +21,24 @@ async function run() {
       const database = client.db("travelDb");
       const servicesCollection = database.collection("services");
 
+      // GET API 
+      app.get('/services', async(req, res) =>{
+        const cursor = servicesCollection.find({});
+        const services = await cursor.toArray();
+        res.send(services);
+
+    })
+
       // POST API
 
-      const doc = {
-        name: "Cox's Bazar",
-        description: "Cox's Bazar is the world longest Sea Beach in the world" ,
-      }
-      const result = await servicesCollection.insertOne(doc);
-      console.log(result);
+      app.post('/services', async(req, res) =>{
+        const service = req.body;
+        console.log('hit the post api', service);
+           const result = await servicesCollection.insertOne(service);
+           console.log(result);
+           res.json(result);
+
+      })
 
     }
     finally {
