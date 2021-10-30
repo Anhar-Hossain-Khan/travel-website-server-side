@@ -20,12 +20,21 @@ async function run() {
       await client.connect();
       const database = client.db("travelDb");
       const servicesCollection = database.collection("services");
+      const orderPlaceCollection = database.collection("orderPlace");
 
       // GET API 
       app.get('/services', async(req, res) =>{
         const cursor = servicesCollection.find({});
         const services = await cursor.toArray();
         res.send(services);
+
+    })
+
+    // GET API 
+    app.get('/orderplace', async(req, res) =>{
+        const cursor = orderPlaceCollection.find({});
+        const orderPlace = await cursor.toArray();
+        res.send(orderPlace);
 
     })
 
@@ -39,6 +48,16 @@ async function run() {
            res.json(result);
 
       })
+
+      // POST API 
+
+      app.post('/orderplace', async(req, res) =>{
+        const orderPlace = req.body;
+        console.log('hit the order place post api', orderPlace);
+           const result = await orderPlaceCollection.insertOne(orderPlace);
+           console.log(result);
+           res.json(result);
+        })
 
     }
     finally {
