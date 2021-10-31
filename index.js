@@ -11,7 +11,6 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ultz5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -27,7 +26,6 @@ async function run() {
         const cursor = servicesCollection.find({});
         const services = await cursor.toArray();
         res.send(services);
-
     })
 
     // GET API 
@@ -35,11 +33,9 @@ async function run() {
         const cursor = orderPlaceCollection.find({});
         const orderPlace = await cursor.toArray();
         res.send(orderPlace);
-
     })
 
     // GET API
-
     app.get('/orderplace/:id', async(req, res)=>{
       const id = req.params.id;
       const query = { _id: ObjectId(id)}
@@ -48,18 +44,15 @@ async function run() {
   })
 
       // POST API
-
       app.post('/services', async(req, res) =>{
         const service = req.body;
         console.log('hit the post api', service);
            const result = await servicesCollection.insertOne(service);
            console.log(result);
            res.json(result);
-
       })
 
       // POST API 
-
       app.post('/orderplace', async(req, res) =>{
         const orderPlace = req.body;
         console.log('hit the order place post api', orderPlace);
@@ -69,7 +62,6 @@ async function run() {
         })
 
         // PUT/UPDATE API
-
       app.put('/orderplace/:id', async(req, res)=>{
         const id = req.params.id;
         const updatedOrder = req.body;
@@ -86,7 +78,6 @@ async function run() {
     })
 
         // DELETE API
-
       app.delete('/orderplace/:id', async(req, res)=>{
         const id = req.params.id;
         const query = { _id: ObjectId(id)}
